@@ -1,21 +1,16 @@
 import { apiClient } from './client';
 
-
 export const apiGateway = {
-  login(password, callbacks={}) {
-    apiClient.post('login', { password: password }, callbacks)
+  login(password) {
+    return apiClient.post('login', { password: password });
   },
   logout() {
-    apiClient.get('logout');
+    return apiClient.get('logout');
   },
-  async getLocation(location_id, callbacks={}) {
-    const response = await apiClient.get(`discover/${location_id}`, callbacks);
-
-    if (response.ok) return await response.json();
+  getLocation(location_id) {
+    return apiClient.get(`discover/${location_id}`);
   },
-  async discoverLocation(location_id, callbacks={}) {
-    const response = await apiClient.post(`discover/${location_id}`, callbacks);
-
-    if (response.ok) return await response.json();
+  discoverLocation(location_id) {
+    return apiClient.post(`discover/${location_id}`);
   },
 };

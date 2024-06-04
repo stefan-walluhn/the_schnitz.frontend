@@ -1,26 +1,21 @@
 export const apiClient = {
-  get(endpoint, callbacks={}) {
-    return this.apiCall(endpoint, 'GET', null, callbacks);
+  get(endpoint) {
+    return this.apiCall(endpoint, 'GET', null);
   },
-  post(endpoint, data=null, callbacks={}) {
-    return this.apiCall(endpoint, 'POST', data, callbacks);
+  post(endpoint, data=null) {
+    return this.apiCall(endpoint, 'POST', data);
   },
-  async apiCall(endpoint, method, data, callbacks) {
+  async apiCall(endpoint, method, data) {
     const options = {
       method: method,
       headers: { 'Content-Type': 'application/json' },
     };
-    if (data) options['body'] = JSON.stringify(data);
+    if (data != null) options['body'] = JSON.stringify(data);
 
     const response = await fetch(`/api/${endpoint}`, options);
 
-    if (response.statusText.toLowerCase() in callbacks) {
-        callbacks[response.statusText.toLowerCase()]();
-        return response;  // only return on OK, else raise
-    }
+    if (!response.ok) throw new Error(response.statusText.toLowerCase());
 
-    if (response.ok) return response;
-
-    throw new Error(await response.statusText);
+    return await response.json();
   },
 }

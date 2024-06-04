@@ -16,20 +16,27 @@ const location = ref(null);
 const newDiscovery = ref(false);
 const errorMsg = ref(null);
 
-const updateLocation = async(func) => {
+const updateLocation = async(gatewayFunction) => {
   try {
-    location.value = await func(props.location_id, {
-      unauthorized: () => { router.push({ name: 'login' }) },
-      ok: () => { errorMsg.value = null },
-    });
-  } catch(error) {
-    errorMsg.value = error.message;
-    throw error;
+    location.value = await gatewayFunction(props.location_id);
+    errorMsg.value = null;
+  } catch (error) {
+    switch(error.message) {
+      case 'unauthorized':
+	router.push({ name: 'login' });
+	break;
+      case 'not found':
+        errorMsg.value = 'you should not guess!';
+	break;
+      default:
+        errorMsg.value = 'something went wrong :-(';
+        throw error;
+    }
   }
 }
 
 watch(location, async (newLocation) => {
-  if (newLocation != undefined && newLocation.status == 'hidden') {
+  if (newLocation.status == 'hidden') {
     newDiscovery.value = true;
     await updateLocation(apiGateway.discoverLocation);
   }
