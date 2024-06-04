@@ -10,13 +10,10 @@ const errorMsg = ref(null);
 
 const login = async password => {
   try {
-    const success = await apiGateway.login(password);
-    if (success) {
-      errorMsg.value = null;
-      router.go(-1);
-    } else {
-      errorMsg.value = 'incorrect password';
-    }
+    await apiGateway.login(password, {
+      unauthorized: () => { errorMsg.value = 'incorrect password' },
+      ok: () => { router.go(-1) },
+    })
   } catch (error) {
     errorMsg.value = `Unexpected error: ${error.message}`;
     throw error;
