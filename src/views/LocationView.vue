@@ -26,7 +26,7 @@ const updateLocation = async(gatewayFunction) => {
 	router.push({ name: 'login' });
 	break;
       case 'not found':
-        errorMsg.value = 'you should not guess!';
+        errorMsg.value = 'you shall not guess!';
 	break;
       default:
         errorMsg.value = 'something went wrong :-(';
@@ -51,10 +51,10 @@ onMounted(async () => {
   <div v-if="errorMsg" class="alert alert-danger mb-3" role="alert">{{ errorMsg }}</div>
   <template v-else>
     <div v-if="newDiscovery" class="alert alert-success mb-3" role="alert">
-      Respekt! Du hast eine neue Location gefunden!
+      Respekt! Du hast einen neuen Ort gefunden!
     </div>
     <div v-else class="alert alert-secondary mb-3" role="alert">
-      Diese Location wurde bereits gefunden.
+      Dieser Ort wurde bereits gefunden.
     </div>
     <div v-if="location" class="card">
       <div class="card-body">
