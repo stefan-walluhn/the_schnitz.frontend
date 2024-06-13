@@ -60,7 +60,18 @@ onMounted(async () => {
       <div class="card-body">
         <h5 class="card-title">{{ location.name }}</h5>
         <p class="card-text">{{ location.description }}</p>
+	<template v-if="location.challenge">
+	  <hr />
+	  <h4>Aufgabe</h4>
+	  <p class="challenge">{{ location.challenge }}</p>
+	</template>
       </div>
     </div>
   </template>
 </template>
+
+<style scoped>
+.challenge {
+  font-weight: bolder;
+}
+</style>
